@@ -1,0 +1,7 @@
+starfleet-ui/node_modules
+starfleet-ui/package-*.json
+
+scripts/node_modules
+
+mimock/
+snaps/

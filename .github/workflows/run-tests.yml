@@ -1,0 +1,51 @@
+name: Demo pipeline for mimock
+
+on:
+  push:
+    branches: [main]
+
+  pull_request:
+    branches: [main]
+
+jobs:
+  setup:
+    name: Run tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Using Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Install Dependencies
+        working-directory: .
+        run: npm i -g serve pm2
+
+      - name: Build UI
+        working-directory: starfleet-ui
+        run: yarn && yarn build
+
+      - name: Start UI
+        working-directory: .
+        run: pm2 serve starfleet-ui/build 3001
+
+      - name: Clone mimock repo
+        run: git clone https://github.com/arbindo/mimock.git mimock
+
+      - name: Run demo test
+        working-directory: mimock
+        run: |
+          cd ./mimock-backend && ./mvnw -ntp clean package -P packageJar -Dmaven.test.skip=true
+          cd .. && docker build -t mimock:latest . -f ./Dockerfile.min
+          cd .. && docker-compose -f ./docker-compose.yml --project-name mimock up -d
+          cd scripts && yarn && yarn setup:mocks && cd ..
+          node scripts/testUI.js
+
+      - name: Upload results
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results
+          path: |
+            snaps/

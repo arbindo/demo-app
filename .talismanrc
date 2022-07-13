@@ -1,0 +1,10 @@
+fileignoreconfig:
+- filename: es-content.json
+  checksum: 7a0b77502b9ffed7244ecb3d1754098aa7458895ef76066eba173a2871eb2965
+- filename: starfleet-ui/src/components/ResultPage/SearchResult.js
+  checksum: adc0fed44349379a918e23cb6de0e7c658217cc5db4e8d7b7640ec55d4aa764f
+- filename: starfleet-ui/src/components/SearchPage/Search.js
+  checksum: 92a7cf23d87028ac9170527d5dbef5d820e9713bf9a6984a2f70b715fc6a6969
+- filename: starfleet-ui/yarn.lock
+  checksum: 44d309b48da970a0419334a267073a186f73442b19b0a444ed8e6848a575bd55
+version: "1.0"

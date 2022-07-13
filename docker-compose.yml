@@ -1,0 +1,19 @@
+services:
+    mimock-db:
+        image: postgres:13.5-alpine
+        container_name: mimock-db
+        ports:
+            - '5432:5432'
+        environment:
+            POSTGRES_USER: mimock
+            POSTGRES_PASSWORD: ironclaw
+            POSTGRES_DB: mimock_db
+    mimock-app:
+        image: mimock:latest
+        container_name: mimock-app
+        ports:
+            - '8080:8080'
+        depends_on:
+            - mimock-db
+        env_file:
+            - ci.env
